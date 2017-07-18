@@ -1,0 +1,52 @@
+\documentclass{article}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm,amsmath}% bold math
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage[numbers]{natbib}
+\usepackage{enumerate}
+\usepackage[total={6in, 8.9in}]{geometry}
+%\usepackage{lineno}
+%\linenumbers
+
+\begin{document}
+\section*{Introduction}
+An outburst of interest has been observed lately in data driven modelling to better understand complex fluid flow fields. At the heart of the endeavours lies two methods aka Proper Orthogonal Decomposition (POD) and Dynamic Mode Decompostion (DMD). \citep{bagheri_jfm2013,liu_ExpF_2015}.  
+\section*{Dynamic Mode Decomposition}
+\begin{enumerate}
+  \item Arrange the data {$z_o$ ....., $z_{m}$} into matrices
+    \begin{align*}
+        X  = [z_o .... z_{m-1}] \quad \quad \quad Y =[z_1 .... z_m].
+    \end{align*}
+        $z_j$ are column vectors formed from rearrangement of 2D/3D spatial data. Data of different variables can be concatenated in vector $z_j$.
+  \item Compute the reduced SVD of X
+      \begin{align*}      X = U\Lambda V^{*},        \end{align*}
+  where, $U$ is $n \times r$, $r$, is the rank of the matrix $X$. $\Lambda$ is a diagonal $r \times r$ matrix of eigen values. $V$ is $m \times r$.
+  \item Define the matrix 
+    \begin{align*} \tilde{S} = U^{*}YV\Lambda^{-1}. \end{align*}
+  \item Compute eigen values and eigen vectors of $\tilde{S}$, writing
+    \begin{align*} \tilde{S}w = \lambda w \end{align*}
+   \item The DMD mode corresponding to DMD eigen value $\lambda$ is given by
+   \begin{align*}  \hat{\psi} = Uw.\end{align*}
+\end{enumerate}
+\begin{align}
+S =
+    \begin{bmatrix}
+        0 & \cdots &        & 0  & b_1\\
+        1 & \ddots &        & 0  & b_2 \\
+        0 & \ddots & \ddots &    & \vdots \\
+          & \ddots & \ddots & 0  & b_{M-2} \\
+        0 & \cdots & 0      & 1  & b_{M-1}
+    \end{bmatrix}
+\end{align}
+
+\clearpage
+\bibliographystyle{unsrtnat}
+\bibliography{MyThesisRefs}
+
+\end{document}
+%
+% ****** End of file ***********
