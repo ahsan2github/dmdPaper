@@ -3,35 +3,56 @@
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm,amsmath}% bold math
-\usepackage{xcolor}
+\usepackage{xcolor, colortbl}
 \usepackage{array}
 \usepackage{amssymb}
 \usepackage[numbers]{natbib}
 \usepackage{enumerate}
 \usepackage[total={6in, 8.9in}]{geometry}
+\usepackage{multirow}
 %\usepackage{lineno}
 %\linenumbers
+\definecolor{Gray}{gray}{0.9}
+\definecolor{White}{rgb}{1,1,1}
 
 \begin{document}
-\section*{Introduction}
-Data driven modelling are mainly used to better understand complex fluid flow filed organizations. The most convincing quality of data driven methods is the inherently non existent necessity of using subjective parameters. At the heart of the endeavours lies mainly two methods aka Proper Orthogonal Decomposition (POD) and Dynamic Mode Decompostion (DMD). \citep{li_bouzeid_blm_2011,bagheri_jfm2013,liu_ExpF_2015}. In this study we intend to study VLSMs especially their length and time scales in an objective manner. 
-\section*{Dynamic Mode Decomposition} DMD can be applied to experimental and numerical data sets alike. This analysis provides with dynamic modes that evolve with certain frequencies and are associated with a decay or growth rate. The dynamic modes resemble to recognizable spatial patterns which can be interpreted as organizational units of fluid flow fields or eddies with a flexible definiton. Schmid proposed a DMD algorithm that make use of reduced SVD of the data matrix. However a proliferation of improved methods over the one proposed by Schmid have been observed. 
-\begin{enumerate}
-  \item Arrange the data {$z_o$ ....., $z_{m}$} into matrices
-    \begin{align*}
-        X  = [z_o .... z_{m-1}] \quad \quad \quad Y =[z_1 .... z_m].
-    \end{align*}
-        $z_j$ are column vectors formed from rearrangement of 2D/3D spatial data. Data of different variables can be concatenated in vector $z_j$.
-  \item Compute the reduced SVD of X
-      \begin{align*}      X = U\Lambda V^{*},        \end{align*}
-  where, $U$ is $n \times r$, $r$, is the rank of the matrix $X$. $\Lambda$ is a diagonal $r \times r$ matrix of eigen values. $V$ is $m \times r$.
-  \item Define the matrix 
-    \begin{align*} \tilde{S} = U^{*}YV\Lambda^{-1}. \end{align*}
-  \item Compute eigen values and eigen vectors of $\tilde{S}$, writing
-    \begin{align*} \tilde{S}w = \lambda w \end{align*}
-   \item The DMD mode corresponding to DMD eigen value $\lambda$ is given by
-   \begin{align*}  \hat{\psi} = Uw.\end{align*}
-\end{enumerate}
+\section{Introduction}
+Data driven modelling has widely been used to better understand complex fluid flow filed organizations, and different dynamical role played by different scales. Understanding the hierarchy of scales and their interaction improves understanding of the turbulence and helps to devise mechanisms to control turbulent mixing processes. The spatial organization of turbulent motions at different scales can be studied using flow visualization, and conveniently projecting velocity fields on to different basis vectors i.e. Fourier modes, empirical eigen vectors, discrete wavelet basis vectors. In general the velocity field is decomposed as a linear combination of orthogonal basis functions such as $u(\mathbf{x},t) = \sum_k a_k \phi_k(\mathbf{x},t)$ where $\phi_k(\mathbf{x})$ represents basis vectors, and $a_k$ represents coefficient of projections. However, it is possible to decompose the velocity field into a fixed set of orthogonal spatial functions with time dependent projection coefficients  i.e. $q(\mathbf{x},t)=\sum_k a_k(t) \phi_k(\mathbf{x})$  where $q(\mathbf{x},t)$ denotes a velocity field, $a_k(t)$ denotes the time dependent expansion coefficients and $\phi_k(\mathbf{x})$ denotes orthogonal spatial functions capturing the spatial description of the field \citep{taira_arxiv_2017}. Such a decomposition underpins the Galerkin projection schemes used in computational fluid dynamics \citep{rowley2004model, armbruster_chaos_94}. Proper orthogonal Decomposition (POD) is a common tool to identify the spatial structures of energetic scales in a turbulent flow. However, to study the temporal evolution of motions at any scale requires to adopt a POD based gelarkin projection scheme to determine the time dependent expansion coefficients. For such a study primarily a POD basis is extracted from a precursor full scale simulation of the Navier-Stokes equations and then the system is modelled on the reduced order POD basis. Adaptation of proper boundary and initial conditions for the new basis is required before solving the resultant ordinary differential equation system in reduced basis \citep[eg. ][]{stabile2017advances}. If one is interested only to study the  coherent structures  determining the spatial basis vectors $\phi_k(\mathbf{x})$ is sufficient. Numerous studies have used POD to this end \citep[eg. ][]{li_bouzeid_blm_2011,muld_compFluids_2012}. The relatively new method of modal decomposition namely the Dynamic Mode Decomposition (DMD) is advantageous in short time flow evolution studies. DMD is completely data driven and does not require any knowledge of the underlying conservation laws that govern the dynamics. DMD can be used to explore the hierarchy of scales that evolve on different time scales. In this study we have made use of DMD to study the spatial and temporal characteristics of Very Large Scale Motions (VLSMs) in the atmospheric boundary layers under two different forcing conditions. 
+
+On the other end of the flow visualization techniques exists completely experimental methods. A visualization experiment is usually carried out using a passive scalar as a tracer such as neutrally buoyant smoke. Such an experiment can reveal the presence of multiple hierarchical scales and their relative motions. A silhouette image of large scale structure resulting from conglomeration of finer scale motions was shown in boundary layers \citep{falco_pof_77, hommema_adrian_blm_03}. However, \citet{hussain_1986_jfm} discussed caveats of visualisation technique and emphasizes that caution must be taken in interpretation of scalar marked boundary lines of structures. Nevertheless, visualization experiments by \citet{falco_pof_77, hommema_adrian_blm_03} provided insight on the organization of large scale motions in the boundary layer. Inclined ramp like structures have been confirmed to exist. The most convincing quality of data driven methods is that these methods do not heavily depend on using subjective parameters as used in conventional conditional averaging. At the heart of the endeavours lies mainly two methods aka Proper Orthogonal Decomposition (POD) \citep[eg. ][]{li_bouzeid_blm_2011,muld_compFluids_2012} and Dynamic Mode Decomposition (DMD). \citep[eg. ][]{bagheri_jfm2013,liu_ExpF_2015,muld_compFluids_2012}. POD has been used to study Very Large Scale Motions (VLSMs) \citep[][]{Hellstrom_pof_2011,bailey_smits_jfm_2010}. \citet{taira_arxiv_2017} discussed the strengths and weaknesses of both the methods. An attractive feature of the DMD mode is that it can isolate dynamic structures with a particular frequencies where, POD modes correspond to a mix of frequencies. This feature makes DMD useful to isolate and rank structures that evolve at different time scales and study their spatial patterns. DMD have been successfully used to identify structures behind bluff bodies but has so far been not used to characterize VLSMs in the inviscid boundary layer where practically there is no restriction on scale separation unlike finite Reynold's number direct numerical simulation studies. 
+\section{Large Eddy Simulation}
+Large Eddy Simulation (LES) was carried out to simulate an Ekman layer. Resolution in horizontal directions was $62.5\ m$. Vertical resolution was $7.89\ m$. The same numerical LES code with same subgrid scale model that was used to study VLSM characteristics in the previous chapters, has been used to generate the Ekman layer flow field. However, to keep computational cost of the DMD analysis within a reasonable limit, grid points in horizontal directions were reduced to 768 while, in the wall-normal direction a total of 96 grid points were laid out. The flow domain spanned $48$ Km in the horzontal (x, y) directions and 750.0 m in the wall-normal direction (z). 
+
+\section{Dynamic Mode Decomposition} DMD can be applied to experimental and numerical data sets alike. This analysis provides with dynamic modes that evolve with certain frequencies and are associated with a decay or growth rate. The dynamic modes resemble to recognizable spatial patterns which can be interpreted as organizational units of fluid flow fields or loosely as eddies. DMD method approximates the state of the system such as a component of the velocity field $u \in R^{N}$ from one time instance ($m$) to another ($m+1$) with Koopman operator operator $A$ as:
+\begin{align}
+u_{m+1}= A u_{m}
+\label{eqn:iterative_reln}
+\end{align}
+Now an ensemble of $M$ snapshots of $u$ obtained with a fixed time interval $\Delta t$ between snapshots can be organized in two matrices $X$ and $Y$ like the following:
+\begin{align}
+X & = [u_{1}\ u_{2} \ \cdots \ u_{M-1}], \\
+Y & = [u_{2}\ u_{3} \ \cdots \ u_{M}].
+\end{align}
+Equation \ref{eqn:iterative_reln} allows to rewrite $X,\ Y$ as:
+\begin{align}
+X & = [u_{1}\ Au_{1} \ \cdots \ A^{M-2}u_{1}] \label{eqn:X_approx}, \\
+Y & = [Au_{1}\ A^{2}u_{1} \ \cdots \ A^{M-1}u_{1}] \label{eqn:Y_approx}. 
+\end{align}
+The columns of $X,\ Y$ are each elements of a Krylov subspace and the last vector in $Y$ can be approximated within the span of the Krylov subspace in an $L^{2}$ sense \citep{kutz_book2013}:
+\begin{align}
+u_{M} = \sum_{i=1}^{M-1}b_{i} u_{i}+ r,
+\label{eqn:last_vec_approx}
+\end{align}
+where, $b_i$ are the coefficients of the Krylov space vectors and $r$ is the residual. Schmid \citep{schmid_jfm2010} suggests that after a critical number of snapshots adding anymore snapshot in $X$ or $Y$ aka any more columns would not improve the vector space spanned by $X$ and at this point the last data vector approximation as shown in Eqn. \ref{eqn:last_vec_approx} would not improve any more. This could practically serve as a limit to the number of snapshots used in calculation. Up until this point the Koopman operator $A$ is unknown. The key idea of DMD is to find an approximation to the eigen vectors and eigen values of $A$. From \ref{eqn:X_approx} and \ref{eqn:Y_approx} a transformation relationship between $X$ and $Y$ can be expressed as:
+\begin{align}
+ Y = A X.
+\label{eqn: y=ax}
+\end{align}
+This matrix equation can also be rewritten following \ref{eqn:last_vec_approx} as:
+\begin{align}
+  Y =X S + r e^{T}_{M-1},
+\end{align}
+where, $e_{M-1} \in R^{(M-1) \times 1}$ is the $(M-1)$th unit vector, $r \in R^{N \times 1}$ and $S \in R^{N \times (M-1)}$ is a matrix of the companion type and assumes the form:
 \begin{align}
 S =
     \begin{bmatrix}
@@ -40,8 +61,142 @@ S =
         0 & \ddots & \ddots &    & \vdots \\
           & \ddots & \ddots & 0  & b_{M-2} \\
         0 & \cdots & 0      & 1  & b_{M-1}
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{align}
+The last column of $S$ contains the unknown coefficients of Eqn. \ref{eqn:last_vec_approx}. Eigen values of $S$ approximate some of the eigen values of $A$. However, calculating matrix $S$ requires the operator $A$ to be knonwn to proceed with an Arnoldi algorithm. \citet{schmid_jfm2010} suggested calculating a matrix $\tilde{S}$ instead of $S$ where, $\tilde{S}$ is a similar matrix to $A$. Utilizing reduced singular value decomposition of the data matrix $X$ and following Eqn. \ref{eqn: y=ax}, $\tilde{S}$ can be calculated as follows:
+\begin{align}
+U^{*} A U  = U^{*} YW  \Sigma^{-1} \equiv \tilde{S},
+\end{align}
+where, $X=U\Sigma W^{*}$. At this point the following eigen value problem is solved,
+\begin{align}
+\tilde{S}y_{k}  =  \mu_{k} y_{k} .
+\end{align}
+The eigen values $\mu_{k}$ capture the time dynamics of the discrete Koopman operator $A$ \citep{kutz_book2013}. The eigen vectors $y_{k}$ when recasted to the reduced column space of $X$, DMD modes $\phi_{k}$ are obtained as:
+\begin{align}
+\phi_{k} = Uy_{k}.
+\end{align}
+The future state of the flow field at any time $n \Delta t$ can be predicted from DMD modes, 
+\begin{align}
+x_{n} = \sum_{k=1}^{K} b_{k} \phi_{k}(x) \text{exp}(\omega_{k} t),
+\end{align}
+or in matrix form, 
+\begin{align}
+x_{DMD}(t)= \Phi\  \text{diag}(\text{exp}(\omega t)) b,
+\end{align}
+where, $\omega_k = \ln (\mu_{k})/ \Delta t$, $\Phi$ is a matrix whose columns are the eigen vectors $y_{k} $, and $b_{k}$ are the initial amplitudes of each mode. $b_{k}$ are obtained from the equation, $x_1=\Phi b$, using Moore-Penrose pseudo-inverse $\Phi^{+}$ such that,
+\begin{equation}
+ b = \Phi^{+}x_{1} .
+\end{equation}
+The algorithm as has been described was first proposed by \citet{schmid_jfm2010} and a more elaborate version can be found in \citep{kutz_book2013, rowley_mezic_schlatter_jfm_2009,tu_thesis}. This is the most widely used DMD algorithm although, a proliferation of modified DMD algorithms have been observed to have a finer separation of multiscale spatio-temporal features \citep[eg. ][]{kutz_fu_brunton_siam_2016}, handle data sampled at irregular time intervals \citep[][]{tu_thesis}, apply DMD to spatially sub-sampled data \citep{florimond_mathelin_pof_2015}, manage large and streaming datasets \citep{hemati_pof_2014}.
+
+DMD was carried out over 8000 frames for both the cases. For $CHNL$ the constant time spacing between consecutive frames ($\Delta t$) was $0.1$ sec. and that for $EK02$ was $2$ sec. Since, three dimensional DMD analysis became prohibitively expensive in terms of requirement of the Random Access Memory, two dimensional DMD was carried out on wall parallel and spanwise-vertical planes. Data was extracted at a particular streamwise-spanwise plane from the three dimensional velocity field for all the 8000 time instances and was stacked as columns in the data matrices $X$ and $Y$ to proceed with DMD mode extraction.   
+
+\section{Results and Discussion}
+DMD method separates spatial structures that have different frequencies. We looked into the frequency distribution of DMD modes at different heights for both the cases. Out of analysing an ensemble of 8000 frames equally spaced in time scale a total of 8000 DMD modes were obtained. Since, DMD modes can not be categorized based on increasing energy content like POD modes, modes were sorted based on fruqency ($\mu_k$). Modes having zero frequency were excluded from analysis because these modes would constitute the mean flow field. Important results are furnished in table \ref{dmd_freq_chnl} for the $CHNL$ and in table \ref{dmd_freq_ek02} for the $EK02$. In tables the time periods of five representative DMD modes are categorised against normalized height. Time periods ($\Delta T$) are inverse of the pure sine or cosine frequencies that correspond to imaginary part of the DMD eigen values. Time periods are normalized with large scale length and velocity scales ($\Delta T / (\delta/U(z))$). ($\delta/U(z)$) constitutes large eddy turn over time as a function of height where, $U(z)$ is the convection velocity at height $z$. Difference between frequencies of the first modes resolved at different heights are apparent. Spatial structures corresponding to DMD modes are shown in Fig. \ref{chnl_dmd_modes_z_4_7}. From the results it is apparent that structures that evolve over a very long time scale can be obtained in both log and wake layer. Since time scale and length scales are directly proportional, it can be inferred that the DMD modes with long time period correspond to very long length scales. However, a quick observation of figure This results obviously agree with the findings of the previous studies that reported the existence of VLSMs in log and outer layer. 
+\begin{table}[!bth]
+\caption{Time period of evolution of the first five DMD modes normalized by $\delta / U(z)$ for $CHNL$. }
+\begin{center}
+\begin{tabular}{  c  c c c c c c  } 
+\hline
+Normalized Height & $U(z)$($ms^{-1}$) & Mode 1 & Mode 2 & Mode 3 & Mode 4 & Mode 5   \\
+\hline
+\multirow{1}{4em}{$0.047\delta$} & 7.12   & 27.09 & 10.19 & 6.11 & 4.63 & 3.48   \\
+\hline
+\multirow{1}{4em}{$0.095\delta$} &  7.91  & 14.05 & 8.78 & 5.65 & 4.07 & 3.16  \\
+\hline
+\multirow{1}{4em}{$0.2\delta$}   &  9.46  & 32.07 & 11.68 & 6.49 & 5.01 & 3.75  \\
+\hline
+\multirow{1}{4em}{$0.33\delta$}  &  10.12 & 50.59 & 12.87 & 7.22 & 4.93 & 3.94 \\
+\hline 
+\multirow{1}{4em}{$0.50\delta$}  &  10.63 & 12.91 & 6.76 & 5.75 & 4.74 & 3.70 \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+\label{dmd_freq_chnl}
+\end{table}
+
+
+\graphicspath{{chap3Img/}}
+\begin{figure}[htb]
+	\begin{minipage}{\textwidth}
+	\setlength{\unitlength}{1in}
+	  \begin{picture}(6,3)
+		\put(0,0){\includegraphics[width=6.0in,height=3in]{chnl_dmd_4mode_z_4-eps-converted-to}}
+		\put(-0.1,2.5){$\mathbf{(a)}$}
+		\put(1.6,0.05){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(4.0,0.05){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(0.25,0.7){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}
+		\put(0.25,2.2){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}
+	  \end{picture}
+	\end{minipage}
+
+	\begin{minipage}{\textwidth}
+	\setlength{\unitlength}{1in}
+	\begin{picture}(6,3)
+		\put(0,0){\includegraphics[width=6.0in,height=3.0in]{chnl_dmd_4mode_z_7-eps-converted-to}}
+		\put(-0.1,2.5){$\mathbf{(b)}$}
+		\put(1.6,0.05){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(4.0,0.05){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(0.25,0.7){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}
+		\put(0.25,2.2){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}		
+	\end{picture}
+	\end{minipage}
+\caption{First four DMD modes with characteristic time period as listed in table \ref{dmd_freq_chnl} at heights $0.047\delta$, and $0.095\delta$ for the $CHNL$ case are shown in subfigure (a), and (b), respectively. In subfigure (a) top left panel shows spatial mode corresponding to normalized time period of 7.12 and top right, bottom left, bottom right panels correspond to ($\Delta T / (\delta/U(z))$) 6.39, 3.83, 2.73, respectively. In subfigure (b) panels beginning from top left corner in the clock wise order corresponds to normalized time periods 9.81, 6.13, 3.94, and 2.84, respectively.}
+\label{chnl_dmd_modes_z_4_7}
+\end{figure}
+
+%
+\begin{table}[htb]
+\caption{Statistics of the first five DMD modes for $EK02$}
+\begin{center}
+\begin{tabular}{  c c c c c c c c} 
+\hline
+Normalized Height & $U(z)$($ms^{-1}$) & Mode 1 & Mode 2 & Mode 3 & Mode 4 & Mode 5 & Mode 6    \\
+\hline
+\multirow{1}{4em}{$0.04\delta$} & 1.45 & 156.38 & 38.83 & 22.55 & 15.51 & 11.85 &  \\
+\hline
+\multirow{1}{4em}{$0.21\delta$} & 1.85 & 114.05 & 35.08 & 20.57 & 14.85 & 11.48 &  \\ 
+\hline
+\multirow{1}{4em}{$0.32\delta$} & 1.97 & 100.80 & 35.82 & 20.94 & 14.86 & 11.47 &  \\ 
+\hline
+\multirow{1}{4em}{$0.48\delta$} & 2.06 & 136.50 & 37.65 & 21.86 & 15.17 & 11.73 &  \\ 
+
+\hline
+\hline
+\end{tabular}
+\end{center}
+\label{dmd_freq_ek02}
+\end{table}
+
+\graphicspath{{chap3Img/}}
+\begin{figure}[htb]
+	\begin{minipage}{\textwidth}
+	\setlength{\unitlength}{1in}
+	  \begin{picture}(6,3)
+		\put(0,0){\includegraphics[width=6.0in,height=3in]{ek02_dmd_mode-1-4_z_24_unstable}}
+		\put(-0.1,2.5){$\mathbf{(a)}$}
+		\put(1.5,0.00){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(4.5,0.00){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(-.05,0.60){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}
+		\put(-.05,2.2){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}
+	  \end{picture}
+	\end{minipage}
+
+	\begin{minipage}{\textwidth}
+	\setlength{\unitlength}{1in}
+	\begin{picture}(6,3)
+		\put(0,0){\includegraphics[width=6.0in,height=3.0in]{ek02_dmd_mode-5-8_z_24_unstable}}
+		\put(-0.1,2.5){$\mathbf{(b)}$}
+		\put(1.5,0.00){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}
+		\put(4.5,0.00){\colorbox{white}{\makebox(0.5,0.05){$\mathbf{x/\delta}$}}}		
+		\put(-.05,0.60){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}
+		\put(-.05,2.2){\colorbox{white}{\makebox(0.2,0.25){$\mathbf{y/\delta}$}}}		
+	\end{picture}
+	\end{minipage}
+\caption{DMD modes of different frequencies at different heights are shown for $EK02$. (a) Four DMD modes in clockwise order beginning from top left panel corresponding to }	
+\label{ek02_dmd_modes_z_4_16}	
+\end{figure}
 
 \clearpage
 \bibliographystyle{unsrtnat}
